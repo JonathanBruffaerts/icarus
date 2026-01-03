@@ -30,15 +30,6 @@ Bash
 
 npm run build
 Sources 🗃️
-Mike Derycke - Coding along: Boardgame REST API (Part 2): YouTube Link. Used in script.js for the initial fetch patterns and basic MongoDB connection logic.
-
-ChatGPT (OpenAI): [Link to your shared chat log]
-
-Used in script.js for implementing ObjectId conversion logic and the multi-section display toggling.
-
-Used in style.css for the Helvetica typography scale and the loading spinner @keyframes animation.
-
-Used in vite.config.js for the Multi-Page Application (MPA) Rollup configuration.
 
 MDN Web Docs - CSS Flexbox: Flexbox Guide used in style.css for the Hero section layout and card grid.
 
