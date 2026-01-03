@@ -52,17 +52,95 @@ function pinCompound(item) {
 
 // 3. Detail View
 function showDetails(item) {
+    // Hide the list and show the detail section
+    document.getElementById('compound-section').classList.add('hidden');
+    document.getElementById('research-log').classList.add('hidden'); // Also hide pinned section
+    const detailView = document.getElementById('detail-view');
+    detailView.classList.remove('hidden');
+    
+    // Inject rich content
+    document.getElementById('detail-content').innerHTML = `
+        <div class="detail-header">
+            <h1>${item.name} <small>(${item.compoundId})</small></h1>
+            <span class="badge">${item.administrationRoute}</span>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-card">
+                <h3>Potency Profile</h3>
+                <p><strong>Anabolic Ratio:</strong> ${item.anabolicRatio}</p>
+                <p><strong>Androgenic Ratio:</strong> ${item.androgenicRatio}</p>
+                <p><strong>Half-Life:</strong> ${item.halfLife} hours</p>
+                <p><strong>Toxicity Level:</strong> ${item.toxicityLevel} / 5</p>
+            </div>
+
+            <div class="detail-card">
+                <h3>Biomarker Impact</h3>
+                <p><strong>Testosterone:</strong> ${item.biomarkers?.testosteroneImpact} ng/dL</p>
+                <p><strong>Estrogen:</strong> ${item.biomarkers?.estrogenImpact} pg/mL</p>
+                <hr>
+                <p><strong>HDL (Good Cholesterol):</strong> ${item.biomarkers?.lipidImpact?.HDL}</p>
+                <p><strong>LDL (Bad Cholesterol):</strong> ${item.biomarkers?.lipidImpact?.LDL}</p>
+            </div>
+        </div>
+
+        <div class="detail-full-width">
+            <h3>Mechanism of Action</h3>
+            <p>${item.mechanismOfAction}</p>
+            
+            <h3>Chemical Structure</h3>
+            <code>${item.chemicalStructure}</code>
+
+            <h3>Side Effects</h3>
+            <div class="tags">
+                ${item.sideEffects.map(effect => `<span class="tag">${effect}</span>`).join('')}
+            </div>
+        </div>
+    `;
+}function showDetails(item) {
+    // Hide the list and show the detail section
     document.getElementById('compound-section').classList.add('hidden');
     const detailView = document.getElementById('detail-view');
     detailView.classList.remove('hidden');
     
+    // Inject rich content
     document.getElementById('detail-content').innerHTML = `
-        <h2>${item.name}</h2>
-        <p>Mechanism: ${item.mechanismOfAction}</p>
-        <ul>
-            <li>Anabolic Ratio: ${item.anabolicRatio}</li>
-            <li>Toxicity: ${item.toxicityLevel}/5</li>
-        </ul>
+        <div class="detail-header">
+            <h1>${item.name} <small>(${item.compoundId})</small></h1>
+            <span class="badge">${item.administrationRoute}</span>
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-card">
+                <h3>Potency Profile</h3>
+                <p><strong>Anabolic Ratio:</strong> ${item.anabolicRatio}</p>
+                <p><strong>Androgenic Ratio:</strong> ${item.androgenicRatio}</p>
+                <p><strong>Half-Life:</strong> ${item.halfLife} hours</p>
+                <p><strong>Toxicity Level:</strong> ${item.toxicityLevel} / 5</p>
+            </div>
+
+            <div class="detail-card">
+                <h3>Biomarker Impact</h3>
+                <p><strong>Testosterone:</strong> ${item.biomarkers?.testosteroneImpact} ng/dL</p>
+                <p><strong>Estrogen:</strong> ${item.biomarkers?.estrogenImpact} pg/mL</p>
+                <hr>
+                <p><strong>HDL (Good Cholesterol):</strong> ${item.biomarkers?.lipidImpact?.HDL}</p>
+                <p><strong>LDL (Bad Cholesterol):</strong> ${item.biomarkers?.lipidImpact?.LDL}</p>
+            </div>
+        </div>
+
+        <div class="detail-full-width">
+            <h3>Mechanism of Action</h3>
+            <p>${item.mechanismOfAction}</p>
+            
+            <h3>Chemical Structure</h3>
+            <code>${item.chemicalStructure}</code>
+
+            <h3>Side Effects</h3>
+            <div class="tags">
+                ${item.sideEffects.map(effect => `<span class="tag">${effect}</span>`).join('')}
+            </div>
+        </div>
     `;
 }
 
