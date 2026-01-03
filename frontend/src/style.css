@@ -30,6 +30,12 @@ nav {
     background: var(--dark); color: white; align-items: center;
 }
 
+nav a {
+    color: white; text-decoration: none; margin: 0 1rem; ;
+}
+
+nav a:hover { text-decoration: underline; }
+
 .hero {
     text-align: center; padding: 4rem 1rem; background: white;
     border-bottom: 1px solid #ddd;
@@ -129,7 +135,7 @@ code {
 footer {
     text-align: center; 
     padding: 1rem; 
-    background: var(--dark); 
+    background: black; 
     color: white; 
     margin-top: auto; /* Push footer to bottom */
 }

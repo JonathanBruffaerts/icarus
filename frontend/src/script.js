@@ -39,7 +39,7 @@ function renderGrid(data, containerId) {
 }
 
 
-// 3. Detail View
+// 2. Detail View
 function showDetails(item) {
     // Hide the list and show the detail section
     document.getElementById('compound-section').classList.add('hidden');
@@ -94,15 +94,16 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById('compound-section').classList.remove('hidden');
     });
 
-    // Nav listeners (moved inside DOMContentLoaded)
+    
     document.getElementById('nav-home').addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('compound-section').classList.remove('hidden');
-        // document.getElementById('about-section').classList.add('hidden'); // Uncomment if you add the section
+        const aboutSection = document.getElementById('about-section');
+        if (aboutSection) aboutSection.classList.add('hidden');
         document.getElementById('detail-view').classList.add('hidden');
     });
 
-    // Comment out or remove if no about-section exists
+
     document.getElementById('nav-about').addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('compound-section').classList.add('hidden');
