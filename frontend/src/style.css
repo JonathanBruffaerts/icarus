@@ -150,3 +150,31 @@ footer {
     color: var(--primary);
     margin-bottom: 1.5rem;
 }
+
+/* Spinner Container */
+#loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+/* The actual animated circle */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 123, 255, 0.1);
+    border-top: 5px solid var(--primary); /* The colored "moving" part */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+/* Animation definition */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

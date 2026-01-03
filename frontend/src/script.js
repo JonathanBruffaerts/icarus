@@ -7,11 +7,15 @@ async function loadCompounds() {
     try {
         const response = await fetch(`${API_URL}/compounds`);
         allCompounds = await response.json();
-        console.log(allCompounds);
+        
         renderGrid(allCompounds, 'compound-grid');
-        document.getElementById('loading').classList.add('hidden');
+        
+        // Hide spinner once data is ready
+        document.getElementById('loading').style.display = 'none';
     } catch (err) {
-        document.getElementById('loading').innerText = "Failed to load compounds.";
+        document.getElementById('loading').innerHTML = `
+            <p style="color: red;">⚠️ Connection Error: Failed to reach research cluster.</p>
+        `;
     }
 }
 
@@ -50,7 +54,9 @@ function showDetails(item) {
     document.getElementById('detail-content').innerHTML = `
         <div class="detail-header">
             <h1>${item.name} <small>(${item.compoundId})</small></h1>
-            <span class="badge">${item.administrationRoute}</span>
+            <div class="tags">
+                ${(Array.isArray(item.category) ? item.category : [item.category]).map(cat => `<span class="badge">${cat}</span>`).join('')}
+            </div>
         </div>
 
         <div class="detail-grid">
