@@ -4,7 +4,26 @@
     --light: #f4f4f4;
 }
 
-body { font-family: sans-serif; margin: 0; background: var(--light); }
+body {
+    margin: 0; 
+    background: var(--light); 
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.6; /* Improves readability for regular text */
+    color: #333;
+    min-height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+}
+
+h1, h2, h3, h4 {
+    font-weight: 700; /* Helvetica Bold */
+    letter-spacing: -0.02em; 
+    margin-bottom: 1rem;
+}
+
+p, li, span {
+    font-weight: 400; /* Helvetica Regular */
+}
 
 nav {
     display: flex; justify-content: space-between; padding: 1rem 5%;
@@ -14,6 +33,7 @@ nav {
 .hero {
     text-align: center; padding: 4rem 1rem; background: white;
     border-bottom: 1px solid #ddd;
+    
 }
 
 .grid {
@@ -107,5 +127,20 @@ code {
 }
 
 footer {
-    text-align: center; padding: 1rem; background: var(--dark); color: white; margin-top: 2rem;
+    text-align: center; 
+    padding: 1rem; 
+    background: var(--dark); 
+    color: white; 
+    margin-top: auto; /* Push footer to bottom */
+}
+.container {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 20px;
+}
+
+.lead-text {
+    font-size: 1.25rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
 }
