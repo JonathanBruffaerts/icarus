@@ -1,20 +1,44 @@
-# Your project name ✨
-A short description of your project. Aim for 2-3 lines.
-Next, read this example and adapt it to your project.
-If you want to add more sections, please do so after the existing ones (avoid burying your sources under a lot of text!).
+🧪 Icarus | Compound Research Database
+Icarus is a specialized digital repository designed to catalog and analyze performance-enhancing compounds. It provides researchers with detailed pharmacological data, including anabolic-to-androgenic ratios, half-life statistics, and physiological biomarker impacts.
 
-Live link: [website.be](website.be) (optional)
+Live link: [Link to your hosted Vite site on Netlify/Vercel]
 
-## Up & running (optional) 🏃‍➡️
-- This should contain step by step instructions to run your project (delete this section if it's not relevant)
-- Run `php artisan launch:rocket`
-- Login to the test account using these credentials:
-    - User: test
-    - Password: test
+Up & running 🏃‍➡️
+Clone the repository:
 
-## Sources 🗃️
-- [Multi auth in Laravel](https://stackoverflow.com/questions/50514738/multi-auth-use-one-page-login-laravel) used in http > controller > LoginController.php (line 18-67)
-- [Audio from ChatGPT](https://chatgpt.com/c/66dae37e-6da8-8001-99ab-245ad328416a) used in resources > music
-- [Chatgpt.com](https://chatgpt.com) ⚠️ this is an invalid example, because it links to a homepage instead of a specific page or issue
-- Generate a ChatGPT share link: options (three dots) > share.
-- If your lecturer still sees these default examples, you're in trouble
+Bash
+
+git clone [your-frontend-repo-url]
+Install dependencies:
+
+Bash
+
+npm install
+Environment Setup: Create a .env file in the root directory and add your backend URL:
+
+Code snippet
+
+VITE_API_URL=https://your-backend-render-url.com
+Launch the development server:
+
+Bash
+
+npm run dev
+Build for production:
+
+Bash
+
+npm run build
+Sources 🗃️
+Mike Derycke - Coding along: Boardgame REST API (Part 2): YouTube Link. Used in script.js for the initial fetch patterns and basic MongoDB connection logic.
+
+ChatGPT (OpenAI): [Link to your shared chat log]
+
+Used in script.js for implementing ObjectId conversion logic and the multi-section display toggling.
+
+Used in style.css for the Helvetica typography scale and the loading spinner @keyframes animation.
+
+Used in vite.config.js for the Multi-Page Application (MPA) Rollup configuration.
+
+MDN Web Docs - CSS Flexbox: Flexbox Guide used in style.css for the Hero section layout and card grid.
+
