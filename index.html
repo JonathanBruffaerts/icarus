@@ -42,7 +42,53 @@
   <main id="main-content">
 
       <div class="container">
+        <!-- Features: What Icarus does (moved above controls) -->
+        <section id="features" class="container">
+          <h2>What Icarus does</h2>
+          <div class="grid-container">
+            <div class="card">
+              <div class="badge">Compound Explorer</div>
+              <p>
+                Browse molecular profiles, dosage data, and clinical outcomes for over 30 SARMs and anabolic agents. Each entry includes toxicity markers, anabolic/androgenic ratios, and user-reported effects.
+              </p>
+              <button class="feature-cta" aria-label="Open Compound Explorer">
+                <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 12h18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M15 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="card">
+              <div class="badge">Research Library</div>
+              <p>
+                Access curated summaries from scientific studies — categorized by mechanism of action, performance metrics, and safety evidence.
+              </p>
+              <button class="feature-cta" aria-label="Open Research Library">
+                <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 12h18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M15 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="card">
+              <div class="badge">Biomarker Dashboard</div>
+              <p>
+                Visualize how compounds influence biomarkers like testosterone, liver enzymes, and lipid balance — presented in easy-to-read charts and data visualizations.
+              </p>
+              <button class="feature-cta" aria-label="Open Biomarker Dashboard">
+                <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 12h18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M15 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
         <!-- Controls Header: Search & Filters -->
+        <h2 class="compounds-title">Compound Explorer</h2>
         <div class="controls-bar">
           <input type="text" id="search-input" placeholder="Search compounds..." aria-label="Search compounds">
           <select id="category-filter" aria-label="Filter by category">
@@ -62,7 +108,6 @@
         <!-- Compound Grid Slot -->
         <div id="compound-grid" class="grid-container"></div>
       </div>
-    </section>
 
     <!-- Detail View Section (Hidden by Default) -->
     <section id="detail-view" class="container hidden">

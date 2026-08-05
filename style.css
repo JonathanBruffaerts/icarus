@@ -260,7 +260,93 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
-  padding-bottom: 4rem;
+  padding-bottom: 0;
+}
+
+/* --- Features Section Specific Styles --- */
+#features h2 {
+  font-size: 50px;
+  font-weight: 800;
+  text-align: center;
+  margin: 3rem 0;
+  color: var(--text-dark);
+}
+
+.compounds-title {
+  font-size: 50px;
+  font-weight: 800;
+  text-align: center;
+  margin: 3rem 0;
+  color: var(--text-dark);
+}
+
+#features .grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 348px);
+  gap: 2rem;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+#features .card {
+  width: 348px;
+  height: 435px;
+  background: #D0E8FF;
+  border-radius: 10px;
+  padding: 2rem 1.5rem;
+  box-shadow: none;
+  position: relative;
+}
+
+#features .badge {
+  width: 274px;
+  height: 54px;
+  background: #ffffff;
+  border-radius: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0F2C5D;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 40px 0;
+}
+
+/* Center badge and text inside the card */
+#features .card {
+  align-items: center;
+  text-align: center;
+}
+
+#features .card p {
+  width: 253px;
+  margin: 0 auto;
+  text-align: left;
+  font-weight: 500;
+}
+
+/* circular CTA button bottom-right */
+.feature-cta {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  background: #0F2C5D;
+  border: none;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.feature-cta svg {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .card {
