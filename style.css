@@ -27,7 +27,7 @@
 }
 
 body {
-  font-family: 'Space Grotesk', impact, sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg-main);
   color: var(--text-dark);
   line-height: 1.5;
@@ -230,15 +230,31 @@ main {
   display: flex;
   gap: 1rem;
   margin: 2rem 0;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.controls-bar .controls-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.controls-label {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-dark);
+  font-family: 'Space Grotesk', Inter, sans-serif;
 }
 
 .controls-bar input,
 .controls-bar select {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  background: var(--card-bg);
+  height: 27px;
+  padding: 0 0.75rem;
+  border: 1px solid #000;
+  border-radius: 27px;
+  background: transparent;
   font-size: 0.95rem;
   color: var(--text-dark);
   outline: none;
@@ -248,18 +264,44 @@ main {
 .controls-bar input {
   flex: 1;
   min-width: 240px;
+  width: auto;
+}
+
+/* center group: make search centered and fixed width */
+.controls-group-center {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.controls-group-center input {
+  width: 450px;
+  height: 27px;
+}
+
+/* left/right select sizing */
+.controls-group-left select,
+.controls-group-right select {
+  width: 111px;
+  height: 27px;
+}
+
+.controls-bar input,
+.controls-bar select {
+  background: transparent;
 }
 
 .controls-bar input:focus,
 .controls-bar select:focus {
-  border-color: var(--primary);
+  border-color: #000;
 }
 
 /* --- Grid & Cards --- */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 256px);
   gap: 1.5rem;
+  justify-content: center;
   padding-bottom: 0;
 }
 
@@ -292,7 +334,7 @@ main {
   width: 348px;
   height: 435px;
   background: #D0E8FF;
-  border-radius: 10px;
+  border-radius: 50px;
   padding: 2rem 1.5rem;
   box-shadow: none;
   position: relative;
@@ -325,6 +367,13 @@ main {
   font-weight: 500;
 }
 
+/* Align the half-life paragraph to the left side of the compound square */
+#compound-grid .card .card-meta {
+  text-align: left;
+  align-self: flex-start;
+  margin-left: 8px;
+}
+
 /* circular CTA button bottom-right */
 .feature-cta {
   position: absolute;
@@ -349,10 +398,21 @@ main {
   display: block;
 }
 
+/* Filter button styles */
+.filter-btn {
+  background: #0F2C5D;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border-radius: 50px;
   padding: 1.5rem;
   position: relative;
   cursor: pointer;
@@ -381,7 +441,6 @@ main {
 
 .card-tag {
   margin-top: auto;
-  padding-top: 1rem;
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -389,26 +448,50 @@ main {
   color: var(--primary);
 }
 
-.pin-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
+/* pin button removed */
+
+/* Compound grid specific card sizing and typography */
+#compound-grid {
   justify-content: center;
-  transition: all 0.2s;
 }
 
-.pin-btn:hover {
-  background: var(--bg-main);
-  color: var(--text-dark);
+#compound-grid .card {
+  width: 256px;
+  height: 256px;
+  padding: 1rem;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  justify-content: flex-start;
+}
+
+#compound-grid .card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 8px auto 15px auto;
+  text-align: center;
+  width: 100%;
+}
+
+#compound-grid .card .card-meta {
+  font-size: 16px;
+  font-weight: 400;
+  color: #595858;
+  margin: 0 0 4px 0;
+}
+
+#compound-grid .card .card-tag {
+  font-size: 16px;
+  font-weight: 700;
+  color: #595858;
+  margin: 0;
+  text-transform: none; /* don't force uppercase */
+  max-width: 100%;
+  overflow-wrap: break-word;
+  white-space: normal;
+  display: block;
 }
 
 /* --- Detail View Layout --- */
@@ -461,12 +544,13 @@ main {
   background: var(--card-bg-subtle);
   border: 1px solid var(--border-color);
   color: var(--text-dark);
-  font-size: 0.8rem;
+  font-size: 18px;
   font-weight: 600;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   margin-top: 0.5rem;
   margin-right: 0.5rem;
+  margin-bottom: 10px;
 }
 
 .detail-grid {

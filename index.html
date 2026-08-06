@@ -39,7 +39,7 @@
       </div>
 </header>
 
-  <main id="main-content">
+  <main id="compound-section">
 
       <div class="container">
         <!-- Features: What Icarus does (moved above controls) -->
@@ -90,13 +90,24 @@
         <!-- Controls Header: Search & Filters -->
         <h2 class="compounds-title">Compound Explorer</h2>
         <div class="controls-bar">
-          <input type="text" id="search-input" placeholder="Search compounds..." aria-label="Search compounds">
-          <select id="category-filter" aria-label="Filter by category">
-            <option value="">All Categories</option>
-            <option value="SARM">SARM</option>
-            <option value="AAS">AAS</option>
-            <option value="Peptide">Peptide</option>
-          </select>
+          <div class="controls-group controls-group-left">
+            <span class="controls-label">Filter:</span>
+            <select id="category-filter" aria-label="Filter by category">
+              <option value="">None</option>
+            </select>
+          </div>
+          <div class="controls-group controls-group-center">
+            <input type="text" id="search-input" placeholder="Search compounds..." aria-label="Search compounds">
+          </div>
+          <div class="controls-group controls-group-right">
+            <span class="controls-label">Sort by</span>
+            <select id="sort-select" aria-label="Sort by">
+              <option value="name" selected>Name</option>
+              <option value="toxicity">Toxicity</option>
+              <option value="anabolic">Anabolic</option>
+              <option value="androgenic">Androgenic</option>
+            </select>
+          </div>
         </div>
 
         <!-- Loading State -->
@@ -143,8 +154,9 @@
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>&copy; 2026 Icarus Research Project. For educational and research purposes only.</p>
+    <div class="footer-box container">
+      <p class="footer-line1">Disclaimer: Information provided here is for educational and research purposes only. No medical advice is given or implied.</p>
+      <p class="footer-line2">© 2026 Icarus — A research-driven resource for performance science.</p>
     </div>
   </footer>
 

@@ -14,28 +14,92 @@ const loadingState = document.getElementById('loading');
 
 const searchInput = document.getElementById('search-input');
 const categoryFilter = document.getElementById('category-filter');
+const sortSelect = document.getElementById('sort-select');
 
 const navHome = document.getElementById('nav-home');
 const navAbout = document.getElementById('nav-about');
 const backBtn = document.getElementById('back-btn');
 
 // --- 1. Fetch & Initialize ---
-async function fetchCompounds() {
+async function fetchCompounds({ search = '', category = '', sort = 'name' } = {}) {
   try {
-    const response = await fetch(`${API_URL}/compounds`);
-    const result = await response.json();
-    
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (category) params.set('category', category);
+    if (sort) params.set('sort', sort);
+
+    const query = params.toString() ? `?${params.toString()}` : '';
+    const response = await fetch(`${API_URL}/compounds${query}`);
+    if (!response.ok) {
+      const text = await response.text();
+      console.error(`Compounds fetch failed: ${response.status} ${response.statusText}`);
+      console.error('Non-JSON response:', text.slice(0, 1000));
+      loadingState.innerHTML = `<p style="color: var(--primary);">⚠️ Server responded ${response.status} ${response.statusText} when fetching compounds.</p>`;
+      return;
+    }
+
+    let result = null;
+    try {
+      result = await response.json();
+    } catch (err) {
+      const text = await response.text();
+      console.error('Failed to parse compounds JSON:', err);
+      console.error('Response body (first 200 chars):', text.slice(0, 200));
+      loadingState.innerHTML = `<p style="color: var(--primary);">⚠️ Invalid JSON received from server.</p>`;
+      return;
+    }
+
     // Safely unwrap the 'data' array from API response
     allCompounds = result.data || [];
-    filteredCompounds = [...allCompounds];
     
-    renderGrid(filteredCompounds);
+    renderGrid(allCompounds);
     loadingState.classList.add('hidden');
   } catch (error) {
     console.error('Fetch error:', error);
     loadingState.innerHTML = `
       <p style="color: var(--primary);">⚠️ Unable to connect to database cluster.</p>
     `;
+  }
+}
+
+async function fetchCategories() {
+  try {
+    const response = await fetch(`${API_URL}/categories`);
+    if (!response.ok) {
+      const text = await response.text();
+      console.error(`Categories fetch failed: ${response.status} ${response.statusText}`);
+      console.error('Non-JSON response (first 500 chars):', text.slice(0, 500));
+      return;
+    }
+
+    let json = null;
+    try {
+      json = await response.json();
+    } catch (err) {
+      const text = await response.text();
+      console.error('Failed to parse categories JSON:', err);
+      console.error('Response body (first 500 chars):', text.slice(0, 500));
+      return;
+    }
+
+    const fetched = Array.isArray(json.data) ? json.data.map(String) : [];
+
+    // Canonical labels stored in DB — ensure these are present and listed first
+    const canonical = [
+      'Steroid',
+      'SARM',
+      'Peptide Hormone',
+      'Growth Hormone Secretagogue'
+    ];
+
+    // Preserve canonical order, then append any additional fetched categories
+    const additional = fetched.filter(c => !canonical.includes(c));
+    const finalList = [...canonical, ...additional];
+
+    categoryFilter.innerHTML = '<option value="">None</option>' +
+      finalList.map(category => `<option value="${category}">${category}</option>`).join('');
+  } catch (error) {
+    console.error('Category load error:', error);
   }
 }
 
@@ -52,17 +116,12 @@ function renderGrid(data) {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
-      <button class="pin-btn" title="Pin Compound" aria-label="Pin">📌</button>
       <h3>${item.name}</h3>
       <p class="card-meta">Half-life: ${item.halfLife}h</p>
       <p class="card-tag">${item.administrationRoute}</p>
     `;
 
-    // Intercept card click, ignoring pin button
-    card.addEventListener('click', (e) => {
-      if (e.target.classList.contains('pin-btn')) return;
-      showDetails(item);
-    });
+    card.addEventListener('click', () => showDetails(item));
 
     gridContainer.appendChild(card);
   });
@@ -121,19 +180,11 @@ function showDetails(item) {
 
 // --- 4. Filtering & Search Logic ---
 function applyFilters() {
-  const query = searchInput.value.toLowerCase();
-  const selectedCategory = categoryFilter.value;
-
-  filteredCompounds = allCompounds.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(query) || item.compoundId.toLowerCase().includes(query);
-    
-    const categories = Array.isArray(item.category) ? item.category : [item.category];
-    const matchesCategory = selectedCategory === '' || categories.includes(selectedCategory);
-
-    return matchesSearch && matchesCategory;
+  fetchCompounds({
+    search: searchInput.value.trim(),
+    category: categoryFilter.value,
+    sort: sortSelect.value
   });
-
-  renderGrid(filteredCompounds);
 }
 
 // Helper sanitizer
@@ -162,11 +213,13 @@ function switchView(view) {
 }
 
 // --- 6. Event Listeners ---
-window.addEventListener('DOMContentLoaded', () => {
-  fetchCompounds();
+window.addEventListener('DOMContentLoaded', async () => {
+  await fetchCategories();
+  await fetchCompounds();
 
   searchInput.addEventListener('input', applyFilters);
   categoryFilter.addEventListener('change', applyFilters);
+  sortSelect.addEventListener('change', applyFilters);
 
   navHome.addEventListener('click', (e) => { e.preventDefault(); switchView('home'); });
   navAbout.addEventListener('click', (e) => { e.preventDefault(); switchView('about'); });
