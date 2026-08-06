@@ -670,11 +670,39 @@ hr {
 }
 
 /* --- Footer --- */
-footer {
-  background: var(--card-bg);
-  border-top: 1px solid var(--border-color);
-  padding: 2rem 0;
+.footer {
+  padding: 0; /* no extra spacing around the full-bleed box */
+}
+
+.footer-box {
+  width: 100%;
+  margin: 5rem 0 0 0; /* increased top margin */
+  height: 245px;
+  background: var(--primary); /* #053BA8 */
+  border-radius: 50px 50px 0 0; /* rounded top corners only */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
   text-align: center;
-  color: var(--text-muted);
-  font-size: 0.85rem;
+  padding: 2rem 1.5rem; /* small horizontal padding for text */
+  box-sizing: border-box;
+}
+
+.footer-box .footer-line1,
+.footer-box .footer-line2 {
+  margin: 0;
+  max-width: 980px;
+  line-height: 1.35;
+}
+
+.footer-box .footer-line1 {
+  font-size: 1rem;
+  margin-bottom: 2.75rem;
+}
+
+.footer-box .footer-line2 {
+  font-size: 0.95rem;
+  opacity: 0.95;
 }
