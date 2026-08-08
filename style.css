@@ -53,10 +53,11 @@ main {
 .navbar {
   position:absolute;
   top:24px;
-  left:50%;
-  transform:translateX(-50%);
-  width:95%;
-  max-width:1300px;
+  left:100px;
+  right:100px;
+  transform:none;
+  width:auto;
+  max-width:none;
   background:white;
   border-radius:999px;
   padding:14px 22px;
@@ -184,7 +185,7 @@ main {
 .hero-content h1 {
   margin: 0 0 18px 0;
   font-weight: 800;
-  line-height: 0.95;
+  line-height: 1.1;
   font-size: clamp(40px, 8vw, 96px);  /* responsive size that matches the example */
   color: #fff;
   text-wrap: balance;
@@ -705,4 +706,44 @@ hr {
 .footer-box .footer-line2 {
   font-size: 0.95rem;
   opacity: 0.95;
+}
+
+/* Container must be relative and hide overflow so molecules don't cause horizontal scrolling */
+#compound-section {
+  position: relative;
+  overflow: hidden; 
+}
+
+/* Base styles for both background molecules */
+.bg-molecule {
+  position: absolute;
+  z-index: -1; 
+  pointer-events: none; 
+}
+
+/* Specific positioning for the top right */
+.molecule-top-right {
+  top: -250px;
+  right: -150px;
+  width: 800px; 
+}
+
+/* Specific positioning for the bottom left */
+.molecule-bottom-left {
+  bottom: -250px; 
+  left: -150px;
+  width: 800px; 
+}
+
+.hero-molecule-right {
+  position: absolute;
+  right: 5%;           /* Insets it from the right edge */
+  top: 52%;            /* Centers it vertically */
+  transform: translateY(-50%);
+  width: 480px;        /* Large enough to balance the heavy text on the left */
+  z-index: 2;          /* Keeps it above the background gradient */
+  opacity: 0.85;       /* Slight transparency to blend elegantly */
+  pointer-events: none; /* Prevents it from blocking interactions */
+  fill: white;      
+  stroke: white;
 }
