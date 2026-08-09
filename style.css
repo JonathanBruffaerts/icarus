@@ -12,8 +12,8 @@
   
   --border-color: #E5E7EB;     /* Divider border */
   --bg-main: #EBF0FE;          /* Global background */
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-md: 10px;
+  --radius-lg: 50px;
   
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
@@ -34,6 +34,17 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+h1,
+h2 {
+  font-family: 'Space Grotesk', Inter, sans-serif;
+  font-weight: 700;
+}
+
+h3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
 }
 
 main {
@@ -351,6 +362,7 @@ main {
   justify-content: center;
   color: #0F2C5D;
   font-size: 20px;
+  font-family: 'Space Grotesk', Inter, sans-serif;
   font-weight: 800;
   margin: 0 0 40px 0;
 }
@@ -497,15 +509,37 @@ main {
 }
 
 /* --- Detail View Layout --- */
-.btn-back {
+.btn-back,
+.detail-close {
   background: none;
   border: none;
   color: var(--text-body);
-  font-size: 0.95rem;
-  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.detail-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.detail-close:hover {
+  background: rgba(5,59,168,0.08);
+  color: var(--primary);
+}
+
+.btn-back {
+  color: var(--text-body);
+  font-size: 0.95rem;
+  font-weight: 600;
   gap: 0.5rem;
   margin: 2rem 0 1.5rem;
 }
@@ -519,7 +553,9 @@ main {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 2.5rem;
-  margin-bottom: 7rem;
+  margin: 0 auto 7rem auto;
+  width: min(105%, 1080px);
+  max-width: 1080px;
 }
 
 .detail-header {
@@ -543,10 +579,10 @@ main {
 
 .badge {
   display: inline-block;
-  background: var(--card-bg-subtle);
-  border: 1px solid var(--border-color);
-  color: var(--text-dark);
-  font-size: 18px;
+  background: rgba(5, 59, 168, 0.12);
+  border: 1px solid rgba(5, 59, 168, 0.25);
+  color: var(--primary);
+  font-size: 16px;
   font-weight: 600;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
@@ -571,10 +607,12 @@ main {
 
 .detail-card h3 {
   font-size: 1rem;
-  text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--text-muted);
   margin-bottom: 1rem;
+}
+
+.detail-container p {
+  font-size: 16px;
 }
 
 .detail-row {
@@ -583,7 +621,7 @@ main {
   padding: 0.5rem 0;
   border-bottom: 1px;
 border-bottom: 1px solid var(--border-color);
-  font-size: 0.95rem;
+  font-size: 16px;
 }
 
 .detail-row:last-child {
@@ -607,12 +645,17 @@ border-bottom: 1px solid var(--border-color);
 }
 
 .tag {
-  background: rgba(255, 59, 48, 0.08);
+  display: inline-block;
+  background: rgba(5, 59, 168, 0.08);
+  border: 1px solid rgba(5, 59, 168, 0.15);
   color: var(--primary);
+  font-size: 16px;
   font-weight: 600;
-  font-size: 0.85rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-md);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  margin-bottom: 10px;
 }
 
 code {
@@ -723,7 +766,7 @@ hr {
 
 /* Specific positioning for the top right */
 .molecule-top-right {
-  top: -250px;
+  top: -255px;
   right: -150px;
   width: 800px; 
 }
@@ -746,4 +789,20 @@ hr {
   pointer-events: none; /* Prevents it from blocking interactions */
   fill: white;      
   stroke: white;
+}
+
+/* --- Animations --- */
+@keyframes smoothEnter {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#detail-view:not(.hidden) {
+  animation: smoothEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

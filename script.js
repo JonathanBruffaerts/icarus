@@ -128,6 +128,10 @@ function renderGrid(data) {
 }
 
 // --- 3. Render Detail View ---
+// Keep track of the chart instance so we can destroy it when opening a new compound
+let biomarkerChartInstance = null;
+
+// --- 3. Render Detail View ---
 function showDetails(item) {
   switchView('detail');
 
@@ -143,40 +147,157 @@ function showDetails(item) {
 
   detailContent.innerHTML = `
     <div class="detail-header">
-      <h1>${item.name} <span class="id-sub">(${item.compoundId})</span></h1>
-      <div>${badgesHtml}</div>
+      <p style="font-family: 'Space Grotesk', monospace; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 1px;">REF // ${item.compoundId.toUpperCase()}</p>
+      <h1>${item.name}</h1>
+      <div style="margin-top: 1rem;">${badgesHtml}</div>
     </div>
 
     <div class="detail-grid">
       <div class="detail-card">
         <h3>Potency Profile</h3>
-        <div class="detail-row"><span>Anabolic Ratio</span><strong>${item.anabolicRatio ?? 'N/A'}</strong></div>
-        <div class="detail-row"><span>Androgenic Ratio</span><strong>${item.androgenicRatio ?? 'N/A'}</strong></div>
-        <div class="detail-row"><span>Half-Life</span><strong>${item.halfLife} hours</strong></div>
-        <div class="detail-row"><span>Toxicity Rating</span><strong>${item.toxicityLevel} / 5</strong></div>
+        <div class="detail-row"><span style="color: var(--text-muted)">Anabolic Ratio</span><strong style="font-size: 1.1rem;">${item.anabolicRatio ?? 'N/A'}</strong></div>
+        <div class="detail-row"><span style="color: var(--text-muted)">Androgenic Ratio</span><strong style="font-size: 1.1rem;">${item.androgenicRatio ?? 'N/A'}</strong></div>
+        <div class="detail-row"><span style="color: var(--text-muted)">Half-Life</span><strong style="font-size: 1.1rem;">${item.halfLife} hrs</strong></div>
+        <div class="detail-row"><span style="color: var(--text-muted)">Toxicity Rating</span><strong style="font-size: 1.1rem;">${item.toxicityLevel} / 5</strong></div>
       </div>
 
       <div class="detail-card">
+        <h3>Mechanism of Action</h3>
+        <p style="font-size: 1rem; line-height: 1.7;">${item.mechanismOfAction || 'No detailed mechanism provided.'}</p>
+      </div>
+      
+      <!-- Chart Container spanning full width -->
+      <div class="detail-card" style="grid-column: 1 / -1;">
         <h3>Biomarker Impact</h3>
-        <div class="detail-row"><span>Testosterone</span><strong>${item.biomarkers?.testosteroneImpact ?? 'N/A'} ng/dL</strong></div>
-        <div class="detail-row"><span>Estrogen</span><strong>${item.biomarkers?.estrogenImpact ?? 'N/A'} pg/mL</strong></div>
-        <div class="detail-row"><span>HDL</span><strong>${item.biomarkers?.lipidImpact?.HDL ?? 'N/A'}</strong></div>
-        <div class="detail-row"><span>LDL</span><strong>${item.biomarkers?.lipidImpact?.LDL ?? 'N/A'}</strong></div>
+        <div style="position: relative; height: 280px; width: 100%; margin-top: 1rem;">
+          <canvas id="biomarkerChart"></canvas>
+        </div>
       </div>
     </div>
 
     <div class="detail-full-width">
-      <h3>Mechanism of Action</h3>
-      <p>${item.mechanismOfAction || 'No detailed mechanism provided.'}</p>
+      <h3 style="margin-top: 2rem;">Chemical Structure</h3>
+      <div style="background: var(--card-bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem 1rem; text-align: center; display: flex; flex-direction: column; align-items: center;">
+        ${item.chemicalStructure ? '<canvas id="molecule-canvas"></canvas>' : '<p style="color: var(--text-muted)">Structure not available</p>'}
+        <p style="font-family: monospace; font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem; word-break: break-all; max-width: 80%;">${item.chemicalStructure || ''}</p>
+      </div>
 
-      <h3>Chemical Structure (SMILES / Formula)</h3>
-      <code>${item.chemicalStructure || 'N/A'}</code>
-
-      <h3>Side Effects</h3>
+      <h3 style="margin-top: 2rem;">Reported Side Effects</h3>
       <div class="tag-list">${sideEffectsHtml}</div>
     </div>
   `;
+
+// Draw the chart
+  renderBiomarkerChart(item.biomarkers);
+
+  // Draw the molecular structure
+  if (item.chemicalStructure) {
+    if (window.SmilesDrawer) {
+      try {
+        const smilesDrawer = new window.SmilesDrawer.Drawer({
+          width: 500,
+          height: 300,
+          compactDrawing: false,
+          themes: {
+            light: {
+              C: '#111827',
+              O: '#d9534f',
+              N: '#053BA8',
+              F: '#10b981',
+              S: '#f59e0b',
+              Cl: '#10b981',
+              Br: '#10b981',
+              I: '#10b981',
+              P: '#f59e0b',
+              BACKGROUND: '#F8F9FA'
+            }
+          }
+        });
+
+        window.SmilesDrawer.parse(item.chemicalStructure, function(tree) {
+          smilesDrawer.draw(tree, 'molecule-canvas', 'light', false);
+        }, function(err) {
+          console.error('SmilesDrawer failed to parse the structure:', err);
+          // Fallback if the database has a standard formula instead of a SMILES string
+          document.getElementById('molecule-canvas').style.display = 'none';
+        });
+      } catch (err) {
+        console.error('Failed to initialize SmilesDrawer:', err);
+      }
+    } else {
+      console.warn('SmilesDrawer library is not loaded.');
+      document.getElementById('molecule-canvas').style.display = 'none';
+    }
+  }
 }
+
+// --- Chart Generation Logic ---
+function renderBiomarkerChart(biomarkers) {
+  const ctx = document.getElementById('biomarkerChart');
+  if (!ctx) return;
+
+  // Destroy the old chart if it exists so they don't overlap
+  if (biomarkerChartInstance) {
+    biomarkerChartInstance.destroy();
+  }
+
+  // Extract values, default to 0 if missing
+  const dataValues = [
+    biomarkers?.testosteroneImpact || 0,
+    biomarkers?.estrogenImpact || 0,
+    biomarkers?.lipidImpact?.HDL || 0,
+    biomarkers?.lipidImpact?.LDL || 0
+  ];
+
+  // Dynamic colors: Blue for positive numbers, Red for negative numbers
+  const bgColors = dataValues.map(val => val < 0 ? 'rgba(255, 59, 48, 0.8)' : 'rgba(5, 59, 168, 0.8)');
+  const borderColors = dataValues.map(val => val < 0 ? 'rgba(255, 59, 48, 1)' : 'rgba(5, 59, 168, 1)');
+
+  biomarkerChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Testosterone', 'Estrogen', 'HDL', 'LDL'],
+      datasets: [{
+        label: 'Impact Variance',
+        data: dataValues,
+        backgroundColor: bgColors,
+        borderColor: borderColors,
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y', // Makes it a horizontal bar chart
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          padding: 12,
+          callbacks: {
+            label: (context) => {
+              let suffix = '';
+              if (context.label.includes('Testosterone')) suffix = ' ng/dL';
+              if (context.label.includes('Estrogen')) suffix = ' pg/mL';
+              return ` Impact: ${context.raw > 0 ? '+' : ''}${context.raw}${suffix}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          title: { display: true, text: 'Change from Baseline', font: { weight: 'bold' } }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { font: { weight: '600', size: 13 } }
+        }
+      }
+    }
+  });
+}
+
 
 // --- 4. Filtering & Search Logic ---
 function applyFilters() {
