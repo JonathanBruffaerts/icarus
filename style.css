@@ -527,8 +527,8 @@ main {
   position: absolute;
   top: 24px;
   right: 24px;
-  background: rgba(255,255,255,0.92);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  background: var(--card-bg-subtle);
+  border: 1px solid var(--border-color);
 }
 
 .detail-close:hover {
