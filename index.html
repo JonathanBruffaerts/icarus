@@ -25,48 +25,49 @@
   <!-- Top Navigation Bar -->
   
 
-  <header class="hero">
-    <nav class="navbar">
-        <a href="index.html" class="logo">
-            <img src="images/icarus_logo.png" alt="Icarus Logo">
-            <span>icarus</span>
-        </a>
-        <div class="nav-links">
-      <a href="#" id="nav-home" class="active">Home</a>
-      <a href="#" id="nav-studies">Studies</a>
-      <a href="#" class="cta-btn" id="nav-about">About</a>
-    </div>
-    </nav>
+ <body>
 
+  <!-- 1. Top Navigation Bar (Moved OUTSIDE the hero) -->
+  <nav class="navbar">
+      <a href="index.html" class="logo">
+          <img src="images/icarus_logo.png" alt="Icarus Logo">
+          <span>icarus</span>
+      </a>
+      <div class="nav-links">
+        <a href="#" id="nav-home" class="active">Home</a>
+        <a href="#" id="nav-studies">Studies</a>
+        <a href="#" class="cta-btn" id="nav-about">About</a>
+      </div>
+  </nav>
+
+  <!-- 2. Hero Section (Added id="hero-section") -->
+  <header id="hero-section" class="hero">
     <div class="hero-content">
         <p>SARMS & STEROIDS</p>
         <h1>Comprehensive compound database</h1>
         <p>Pushing the boundaries of human potential</p>
-      </div>
-      <img src="images/molecule-white.svg" class="hero-molecule-right" alt="" aria-hidden="true">
+    </div>
+    <img src="images/molecule-white.svg" class="hero-molecule-right" alt="" aria-hidden="true">
   </header>
-</header>
 
-  <main id="compound-section">
-
-   <!-- TOP RIGHT MOLECULE -->
-    <img src="images/molecule.svg" alt="" class="bg-molecule molecule-top-right" aria-hidden="true">
-
-    <!-- BOTTOM LEFT MOLECULE -->
-    <img src="images/molecule.svg" alt="" class="bg-molecule molecule-bottom-left" aria-hidden="true">
-
-    <div class="container">
+  <!-- 3. Main Content (All views are now safely inside main) -->
+  <main>
     
+    <!-- LIST VIEW -->
+    <section id="compound-section">
+      <!-- TOP RIGHT MOLECULE -->
+      <img src="images/molecule.svg" alt="" class="bg-molecule molecule-top-right" aria-hidden="true">
+      <!-- BOTTOM LEFT MOLECULE -->
+      <img src="images/molecule.svg" alt="" class="bg-molecule molecule-bottom-left" aria-hidden="true">
+
       <div class="container">
-        <!-- Features: What Icarus does (moved above controls) -->
+        <!-- Features: What Icarus does -->
         <section id="features">
           <h2>What Icarus does</h2>
           <div class="grid-container">
             <div class="card">
               <div class="badge">Compound Explorer</div>
-              <p>
-                Browse molecular profiles, dosage data, and clinical outcomes for over 30 SARMs and anabolic agents. Each entry includes toxicity markers, anabolic/androgenic ratios, and user-reported effects.
-              </p>
+              <p>Browse molecular profiles, dosage data, and clinical outcomes for over 30 SARMs and anabolic agents. Each entry includes toxicity markers, anabolic/androgenic ratios, and user-reported effects.</p>
               <button class="feature-cta" aria-label="Open Compound Explorer">
                 <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M3 12h18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -77,9 +78,7 @@
 
             <div class="card">
               <div class="badge">Research Library</div>
-              <p>
-                Access curated summaries from scientific studies — categorized by mechanism of action, performance metrics, and safety evidence.
-              </p>
+              <p>Access curated summaries from scientific studies — categorized by mechanism of action, performance metrics, and safety evidence.</p>
               <button class="feature-cta" aria-label="Open Research Library">
                 <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M3 12h18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -90,9 +89,7 @@
 
             <div class="card">
               <div class="badge">Biomarker Dashboard</div>
-              <p>
-                Visualize how compounds influence biomarkers like testosterone, liver enzymes, and lipid balance — presented in easy-to-read charts and data visualizations.
-              </p>
+              <p>Visualize how compounds influence biomarkers like testosterone, liver enzymes, and lipid balance — presented in easy-to-read charts and data visualizations.</p>
               <button class="feature-cta" aria-label="Open Biomarker Dashboard">
                 <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M3 12h18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -135,6 +132,35 @@
         <!-- Compound Grid Slot -->
         <div id="compound-grid" class="grid-container"></div>
       </div>
+    </section>
+
+    <!-- DETAIL VIEW -->
+    <section id="detail-view" class="container hidden">
+      <button id="back-btn" class="detail-close" aria-label="Close detail view">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 6 L18 18 M6 18 L18 6" />
+        </svg>
+      </button>
+      <div id="detail-content" class="detail-container"></div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about-section" class="container hidden">
+      <div class="about-card">
+        <h1>About Icarus</h1>
+        <p class="lead-text">
+          Icarus is a specialized digital repository dedicated to the pharmacological analysis 
+          of performance-enhancing compounds and their physiological markers.
+        </p>
+        <hr>
+        <h3>Research Integrity</h3>
+        <p>
+          Every compound in our database is cataloged with a specific focus on 
+          anabolic-to-androgenic ratios, half-life data, and biomarker impacts to ensure 
+          a comprehensive overview of efficacy and risk profiles.
+        </p>
+      </div>
+    </section>
 
   </main>
 

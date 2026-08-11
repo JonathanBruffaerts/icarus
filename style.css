@@ -530,7 +530,7 @@ main {
 .detail-close {
   position: absolute;
   top: 24px;
-  right: 24px;
+  right: 80px;
   background: var(--card-bg-subtle);
   border: 1px solid var(--border-color);
 }
@@ -557,7 +557,7 @@ main {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 2.5rem;
-  margin: 0 auto 7rem auto;
+  margin: 2rem auto 7rem auto;
   width: min(105%, 1080px);
   max-width: 1080px;
 }
@@ -807,6 +807,21 @@ hr {
   }
 }
 
+@keyframes smoothExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+}
+
 #detail-view:not(.hidden) {
   animation: smoothEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+#detail-view.closing {
+  animation: smoothExit 0.18s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

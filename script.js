@@ -7,6 +7,7 @@ let filteredCompounds = [];
 const compoundSection = document.getElementById('compound-section');
 const detailView = document.getElementById('detail-view');
 const aboutSection = document.getElementById('about-section');
+const heroSection = document.getElementById('hero-section');
 
 const gridContainer = document.getElementById('compound-grid');
 const detailContent = document.getElementById('detail-content');
@@ -19,6 +20,10 @@ const sortSelect = document.getElementById('sort-select');
 const navHome = document.getElementById('nav-home');
 const navAbout = document.getElementById('nav-about');
 const backBtn = document.getElementById('back-btn');
+
+let savedScrollY = 0;
+let currentView = 'home';
+let closeAnimationTimeout = null;
 
 // --- 1. Fetch & Initialize ---
 async function fetchCompounds({ search = '', category = '', sort = 'name' } = {}) {
@@ -315,6 +320,20 @@ function catSanitize(str) {
 
 // --- 5. Navigation & View Switching ---
 function switchView(view) {
+  if (detailView.classList.contains('closing') && view !== 'detail') {
+    detailView.classList.remove('closing');
+    if (closeAnimationTimeout) {
+      clearTimeout(closeAnimationTimeout);
+      closeAnimationTimeout = null;
+    }
+  }
+
+  if (currentView === 'home' && view !== 'home') {
+    savedScrollY = window.scrollY || window.pageYOffset;
+  }
+
+  // Hide everything by default
+  heroSection.classList.add('hidden');
   compoundSection.classList.add('hidden');
   detailView.classList.add('hidden');
   aboutSection.classList.add('hidden');
@@ -322,15 +341,32 @@ function switchView(view) {
   navHome.classList.remove('active');
   navAbout.classList.remove('active');
 
+  // Reveal only what is requested
   if (view === 'home') {
+    heroSection.classList.remove('hidden');
     compoundSection.classList.remove('hidden');
     navHome.classList.add('active');
+    window.scrollTo({ top: savedScrollY, behavior: 'auto' });
   } else if (view === 'about') {
     aboutSection.classList.remove('hidden');
     navAbout.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'auto' });
   } else if (view === 'detail') {
     detailView.classList.remove('hidden');
+    detailView.classList.remove('closing');
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }
+
+  currentView = view;
+}
+
+function closeDetailView() {
+  if (detailView.classList.contains('closing')) return;
+  detailView.classList.add('closing');
+  closeAnimationTimeout = setTimeout(() => {
+    closeAnimationTimeout = null;
+    switchView('home');
+  }, 180);
 }
 
 // --- 6. Event Listeners ---
@@ -344,5 +380,5 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   navHome.addEventListener('click', (e) => { e.preventDefault(); switchView('home'); });
   navAbout.addEventListener('click', (e) => { e.preventDefault(); switchView('about'); });
-  backBtn.addEventListener('click', () => switchView('home'));
+  backBtn.addEventListener('click', () => closeDetailView());
 });
