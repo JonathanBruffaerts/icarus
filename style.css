@@ -17,6 +17,7 @@
   
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+  --navbar-height: 56px;
 }
 
 /* --- Global Resets & Typography --- */
@@ -49,6 +50,7 @@ h3 {
 
 main {
   flex: 1;
+  padding-top: calc(var(--navbar-height) + 24px); /* reserve space for fixed navbar */
 }
 
 .container {
@@ -62,19 +64,21 @@ main {
 
 /* --- Navigation --- */
 .navbar {
-  position:absolute;
-  top:24px;
-  left:100px;
-  right:100px;
-  transform:none;
-  width:auto;
-  max-width:none;
-  background:white;
-  border-radius:999px;
-  padding:14px 22px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  position: fixed;
+  top: 24px;
+  left: 100px;
+  right: 100px;
+  width: auto;
+  max-width: none;
+  background: white;
+  border-radius: 999px;
+  padding: 10px 22px;
+  height: var(--navbar-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 6px 20px rgba(9, 30, 66, 0.08);
 }
 
 .nav-container {
