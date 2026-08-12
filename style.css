@@ -50,7 +50,11 @@ h3 {
 
 main {
   flex: 1;
-  padding-top: calc(var(--navbar-height) + 24px); /* reserve space for fixed navbar */
+}
+
+/* Apply extra top padding only when detail view is open so layout doesn't jump */
+body.detail-open main {
+  padding-top: calc(var(--navbar-height) + 24px);
 }
 
 .container {
