@@ -190,8 +190,8 @@ body.detail-open main {
 /* --- Hero Banner --- */
 .hero {
   position: relative;
-  text-align: left; /* change from center to left-aligned content on top of image */
-  padding: 0; /* we will position the text with absolute positioning */
+  text-align: left;
+  padding: 0; 
   border-bottom: 1px solid var(--border-color);
   min-height: 100vh;
   background:
@@ -212,11 +212,11 @@ body.detail-open main {
 /* Position the text block on top of the image, left side and vertically centered */
 .hero-content {
   position: absolute;
-  left: 6%;                 /* move in from the left edge */
+  left: 6%;                 
   top: 50%;
   transform: translateY(-50%);
   z-index: 2;
-  max-width: 640px;         /* controls line breaks for the large heading */
+  max-width: 640px;       
   color: #fff;
 }
 
@@ -235,7 +235,7 @@ body.detail-open main {
   margin: 0 0 18px 0;
   font-weight: 800;
   line-height: 1.1;
-  font-size: clamp(40px, 8vw, 96px);  /* responsive size that matches the example */
+  font-size: clamp(40px, 8vw, 96px);  
   color: #fff;
   text-wrap: balance;
   -webkit-font-smoothing: antialiased;
@@ -261,7 +261,7 @@ body.detail-open main {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1; /* sits under .hero-content */
+  z-index: 1; 
 }
 
 .hero-content p {
@@ -405,7 +405,6 @@ body.detail-open main {
   margin: 0 0 40px 0;
 }
 
-/* Center badge and text inside the card */
 #features .card {
   align-items: center;
   text-align: center;
@@ -418,7 +417,6 @@ body.detail-open main {
   font-weight: 500;
 }
 
-/* Align the half-life paragraph to the left side of the compound square */
 #compound-grid .card .card-meta {
   text-align: left;
   align-self: flex-start;
@@ -500,8 +498,6 @@ body.detail-open main {
   color: var(--primary);
 }
 
-/* pin button removed */
-
 /* Compound grid specific card sizing and typography */
 #compound-grid {
   justify-content: center;
@@ -539,7 +535,7 @@ body.detail-open main {
   font-weight: 700;
   color: #595858;
   margin: 0;
-  text-transform: none; /* don't force uppercase */
+  text-transform: none; 
   max-width: 100%;
   overflow-wrap: break-word;
   white-space: normal;
@@ -779,21 +775,21 @@ hr {
 
 /* --- Footer --- */
 .footer {
-  padding: 0; /* no extra spacing around the full-bleed box */
+  padding: 0; 
 }
 
 .footer-box {
   width: 100%;
   height: 245px;
-  background: var(--primary); /* #053BA8 */
-  border-radius: 50px 50px 0 0; /* rounded top corners only */
+  background: var(--primary); 
+  border-radius: 50px 50px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #ffffff;
   text-align: center;
-  padding: 2rem 1.5rem; /* small horizontal padding for text */
+  padding: 2rem 1.5rem; 
   box-sizing: border-box;
 }
 
@@ -843,13 +839,13 @@ hr {
 
 .hero-molecule-right {
   position: absolute;
-  right: 5%;           /* Insets it from the right edge */
-  top: 52%;            /* Centers it vertically */
+  right: 5%;          
+  top: 52%;            
   transform: translateY(-50%);
-  width: 480px;        /* Large enough to balance the heavy text on the left */
-  z-index: 2;          /* Keeps it above the background gradient */
-  opacity: 0.85;       /* Slight transparency to blend elegantly */
-  pointer-events: none; /* Prevents it from blocking interactions */
+  width: 480px;       
+  z-index: 2;        
+  opacity: 0.85;       
+  pointer-events: none; 
   fill: white;      
   stroke: white;
 }
@@ -1042,4 +1038,34 @@ hr {
 
 .text-muted {
   color: var(--text-muted);
+}
+
+/* --- Studies Page & Footer Specific Adjustments --- */
+
+.studies-main {
+  padding-top: 80px;
+  min-height: 80vh;
+}
+
+#studies-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.load-more-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.admin-link {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.4;
+  margin-left: 15px;
+  transition: opacity 0.2s ease;
+}
+
+.admin-link:hover {
+  opacity: 1;
 }

@@ -5,7 +5,7 @@ let filteredCompounds = [];
 
 // Element References
 const mainContent = document.getElementById('main-content');
-const heroSection = document.getElementById('hero-section'); // Declared only once!
+const heroSection = document.getElementById('hero-section'); 
 const compoundSection = document.getElementById('compound-section');
 const detailView = document.getElementById('detail-view');
 const aboutSection = document.getElementById('about-section');
@@ -20,29 +20,12 @@ const sortSelect = document.getElementById('sort-select');
 
 const navHome = document.getElementById('nav-home');
 const navStudiesCta = document.getElementById('nav-studies-cta');
-// Keep a safe reference to the old about nav (may be removed); null if not present
 const navAbout = document.getElementById('nav-about');
 const backBtn = document.getElementById('back-btn');
 
 let savedScrollY = 0;
 let currentView = 'home';
 let closeAnimationTimeout = null;
-
-
-// --- Curtain Reveal Scroll Logic ---
-window.addEventListener('scroll', () => {
-  // Only apply the effect if the hero is visible (home view)
-  if (!heroSection.classList.contains('hidden')) {
-    const scrollY = window.scrollY;
-    const heroHeight = heroSection.offsetHeight;
-
-    if (scrollY > heroHeight) {
-      heroSection.classList.add('scrolled');
-    } else {
-      heroSection.classList.remove('scrolled');
-    }
-  }
-});
 
 // --- 1. Fetch & Initialize ---
 async function fetchCompounds({ search = '', category = '', sort = 'name' } = {}) {
@@ -73,7 +56,6 @@ async function fetchCompounds({ search = '', category = '', sort = 'name' } = {}
       return;
     }
 
-    // Safely unwrap the 'data' array from API response
     allCompounds = result.data || [];
     
     renderGrid(allCompounds);
@@ -108,7 +90,6 @@ async function fetchCategories() {
 
     const fetched = Array.isArray(json.data) ? json.data.map(String) : [];
 
-    // Canonical labels stored in DB — ensure these are present and listed first
     const canonical = [
       'Steroid',
       'SARM',
@@ -116,7 +97,6 @@ async function fetchCategories() {
       'Growth Hormone Secretagogue'
     ];
 
-    // Preserve canonical order, then append any additional fetched categories
     const additional = fetched.filter(c => !canonical.includes(c));
     const finalList = [...canonical, ...additional];
 
@@ -152,7 +132,6 @@ function renderGrid(data) {
 }
 
 // --- 3. Render Detail View ---
-// Keep track of the chart instance so we can destroy it when opening a new compound
 let biomarkerChartInstance = null;
 
 // --- 3. Render Detail View ---
@@ -304,7 +283,7 @@ function renderBiomarkerChart(biomarkers) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      indexAxis: 'y', // Makes it a horizontal bar chart
+      indexAxis: 'y', 
       plugins: {
         legend: { display: false },
         tooltip: {
