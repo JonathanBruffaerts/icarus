@@ -23,9 +23,6 @@
 <body>
 
   <!-- Top Navigation Bar -->
-  
-
- <body>
 
   <!-- 1. Top Navigation Bar (Moved OUTSIDE the hero) -->
   <nav class="navbar">
@@ -34,9 +31,8 @@
           <span>icarus</span>
       </a>
       <div class="nav-links">
-        <a href="#" id="nav-home" class="active">Home</a>
-        <a href="#" id="nav-studies">Studies</a>
-        <a href="#" class="cta-btn" id="nav-about">About</a>
+        <a href="index.html" id="nav-home" class="active">Home</a>
+        <a href="studies.html" class="cta-btn" id="nav-studies-cta">Studies</a>
       </div>
   </nav>
 
@@ -51,7 +47,7 @@
   </header>
 
   <!-- 3. Main Content (All views are now safely inside main) -->
-  <main>
+  <main id="main-content">
     
     <!-- LIST VIEW -->
     <section id="compound-section">
@@ -79,12 +75,12 @@
             <div class="card">
               <div class="badge">Research Library</div>
               <p>Access curated summaries from scientific studies — categorized by mechanism of action, performance metrics, and safety evidence.</p>
-              <button class="feature-cta" aria-label="Open Research Library">
+              <a href="studies.html" class="feature-cta" aria-label="Open Research Library">
                 <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M3 12h18" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M15 6l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-              </button>
+              </a>
             </div>
 
             <div class="card">
@@ -163,34 +159,6 @@
     </section>
 
   </main>
-
-  <!-- Detail View Section (Hidden by Default) -->
-  <section id="detail-view" class="container hidden">
-    <button id="back-btn" class="detail-close" aria-label="Close detail view">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 6 L18 18 M6 18 L18 6" />
-      </svg>
-    </button>
-    <div id="detail-content" class="detail-container"></div>
-  </section>
-
-  <!-- About Section (Hidden by Default) -->
-  <section id="about-section" class="container hidden">
-    <div class="about-card">
-      <h1>About Icarus</h1>
-      <p class="lead-text">
-        Icarus is a specialized digital repository dedicated to the pharmacological analysis 
-        of performance-enhancing compounds and their physiological markers.
-      </p>
-      <hr>
-      <h3>Research Integrity</h3>
-      <p>
-        Every compound in our database is cataloged with a specific focus on 
-        anabolic-to-androgenic ratios, half-life data, and biomarker impacts to ensure 
-        a comprehensive overview of efficacy and risk profiles.
-      </p>
-    </div>
-  </section>
 
   <!-- Footer -->
   <footer>

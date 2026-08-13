@@ -4,10 +4,11 @@ let allCompounds = [];
 let filteredCompounds = [];
 
 // Element References
+const mainContent = document.getElementById('main-content');
+const heroSection = document.getElementById('hero-section'); // Declared only once!
 const compoundSection = document.getElementById('compound-section');
 const detailView = document.getElementById('detail-view');
 const aboutSection = document.getElementById('about-section');
-const heroSection = document.getElementById('hero-section');
 
 const gridContainer = document.getElementById('compound-grid');
 const detailContent = document.getElementById('detail-content');
@@ -18,12 +19,30 @@ const categoryFilter = document.getElementById('category-filter');
 const sortSelect = document.getElementById('sort-select');
 
 const navHome = document.getElementById('nav-home');
+const navStudiesCta = document.getElementById('nav-studies-cta');
+// Keep a safe reference to the old about nav (may be removed); null if not present
 const navAbout = document.getElementById('nav-about');
 const backBtn = document.getElementById('back-btn');
 
 let savedScrollY = 0;
 let currentView = 'home';
 let closeAnimationTimeout = null;
+
+
+// --- Curtain Reveal Scroll Logic ---
+window.addEventListener('scroll', () => {
+  // Only apply the effect if the hero is visible (home view)
+  if (!heroSection.classList.contains('hidden')) {
+    const scrollY = window.scrollY;
+    const heroHeight = heroSection.offsetHeight;
+
+    if (scrollY > heroHeight) {
+      heroSection.classList.add('scrolled');
+    } else {
+      heroSection.classList.remove('scrolled');
+    }
+  }
+});
 
 // --- 1. Fetch & Initialize ---
 async function fetchCompounds({ search = '', category = '', sort = 'name' } = {}) {
@@ -189,6 +208,15 @@ function showDetails(item) {
 
       <h3 style="margin-top: 2rem;">Reported Side Effects</h3>
       <div class="tag-list">${sideEffectsHtml}</div>
+      
+      <h3 style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        Related Literature (<span id="study-count">0</span>)
+      </h3>
+      <div id="compound-studies-container" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+        ${item.studyIds && item.studyIds.length > 0 
+          ? `<div style="text-align: center; color: var(--text-muted);"><div class="spinner" style="margin: 0 auto 1rem auto; width: 24px; height: 24px; border-width: 2px;"></div>Fetching clinical studies...</div>` 
+          : '<p style="color: var(--text-muted)">No studies currently linked to this compound in the database.</p>'}
+      </div>
     </div>
   `;
 
@@ -234,6 +262,8 @@ function showDetails(item) {
       document.getElementById('molecule-canvas').style.display = 'none';
     }
   }
+  // Fetch linked studies
+  loadCompoundStudies(item);
 }
 
 // --- Chart Generation Logic ---
@@ -320,18 +350,6 @@ function catSanitize(str) {
 
 // --- 5. Navigation & View Switching ---
 function switchView(view) {
-  if (detailView.classList.contains('closing') && view !== 'detail') {
-    detailView.classList.remove('closing');
-    if (closeAnimationTimeout) {
-      clearTimeout(closeAnimationTimeout);
-      closeAnimationTimeout = null;
-    }
-  }
-
-  if (currentView === 'home' && view !== 'home') {
-    savedScrollY = window.scrollY || window.pageYOffset;
-  }
-
   // Hide everything by default
   heroSection.classList.add('hidden');
   compoundSection.classList.add('hidden');
@@ -339,25 +357,28 @@ function switchView(view) {
   aboutSection.classList.add('hidden');
 
   navHome.classList.remove('active');
-  navAbout.classList.remove('active');
+  navAbout?.classList.remove('active');
 
-  // Reveal only what is requested
+  // Ensure body class reflects whether detail view is active
+  document.body.classList.remove('detail-open');
+
   if (view === 'home') {
     heroSection.classList.remove('hidden');
     compoundSection.classList.remove('hidden');
     navHome.classList.add('active');
-    window.scrollTo({ top: savedScrollY, behavior: 'auto' });
+    
+    // Force a scroll event to instantly recalculate the reveal position
+    window.dispatchEvent(new Event('scroll'));
   } else if (view === 'about') {
     aboutSection.classList.remove('hidden');
-    navAbout.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    navAbout?.classList.add('active');
   } else if (view === 'detail') {
     detailView.classList.remove('hidden');
-    detailView.classList.remove('closing');
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    document.body.classList.add('detail-open');
   }
-
-  currentView = view;
+  
+  // Snap the user back to the top of the page smoothly
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function closeDetailView() {
@@ -379,6 +400,86 @@ window.addEventListener('DOMContentLoaded', async () => {
   sortSelect.addEventListener('change', applyFilters);
 
   navHome.addEventListener('click', (e) => { e.preventDefault(); switchView('home'); });
-  navAbout.addEventListener('click', (e) => { e.preventDefault(); switchView('about'); });
+  // navStudiesCta is an anchor to the Research Library; default navigation will work.
+
+  // Feature CTAs: make specific feature buttons scroll to the compound explorer
+  const featureExplorerButtons = document.querySelectorAll('.feature-cta[aria-label="Open Compound Explorer"], .feature-cta[aria-label="Open Biomarker Dashboard"]');
+  featureExplorerButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Ensure the explorer content is visible, then scroll to it
+      switchView('home');
+      // Scroll to the Compound Explorer heading (more precise target) and account for the fixed navbar
+      const target = document.querySelector('.compounds-title') || document.getElementById('compound-section');
+      if (target) {
+        // slight delay to allow view switch to apply
+        setTimeout(() => {
+          const navbar = document.querySelector('.navbar');
+          const cssNavHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--navbar-height')) || 56;
+          const navHeight = (navbar && navbar.offsetHeight) ? navbar.offsetHeight : cssNavHeight;
+          const y = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 12; // small gap
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }, 80);
+      }
+    });
+  });
+
+  // Ensure all close buttons (top-right X or detail-close) close the detail view
+  document.querySelectorAll('.detail-close').forEach(el => el.addEventListener('click', () => closeDetailView()));
+
   backBtn.addEventListener('click', () => closeDetailView());
 });
+
+// --- 7. Fetch Specific Studies for a Compound ---s
+async function loadCompoundStudies(item) {
+  const container = document.getElementById('compound-studies-container');
+  const countSpan = document.getElementById('study-count');
+  
+  try {
+    let query = '';
+
+    // 1. Check if specific PMIDs are linked in MongoDB
+    if (item.studyIds && Array.isArray(item.studyIds) && item.studyIds.length > 0) {
+      query = item.studyIds.map(id => `EXT_ID:${id}`).join(' OR ');
+    } else {
+      // 2. Automatic Fallback: Search Europe PMC by compound name
+      query = `"${item.name}" AND (pharmacology OR trial OR toxicity OR safety)`;
+    }
+
+    const response = await fetch(`${API_URL}/api/pubmed/search?q=${encodeURIComponent(query)}`);
+    
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const result = await response.json();
+    
+    const hitCount = result.hitCount || (result.data ? result.data.length : 0);
+    countSpan.textContent = hitCount;
+
+    if (hitCount === 0) {
+      container.innerHTML = '<p style="color: var(--text-muted)">No literature currently found for this compound.</p>';
+      return;
+    }
+
+    // Generate the link to the dedicated studies page, passing the query in the URL
+    const studiesUrl = `studies.html?q=${encodeURIComponent(query)}`;
+
+    // Render a clean CTA box linking to the library
+    container.innerHTML = `
+      <div style="background: var(--card-bg-subtle); border: 1px solid var(--border-color); padding: 2rem; border-radius: var(--radius-md); text-align: center;">
+        <h4 style="font-size: 1.25rem; color: var(--text-dark); margin-bottom: 0.5rem;">${hitCount} Clinical Studies Found</h4>
+        <p style="color: var(--text-body); margin-bottom: 1.5rem; font-size: 0.95rem;">
+          Explore peer-reviewed literature, toxicity reports, and pharmacological data associated with ${item.name}.
+        </p>
+        <a href="${studiesUrl}" class="cta-btn" style="text-decoration: none; padding: 0.75rem 2rem; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+          Open in Research Library
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    `;
+    
+  } catch (error) {
+    console.error('Failed to fetch compound studies:', error);
+    container.innerHTML = '<p style="color: var(--primary);">⚠️ Unable to load related literature count.</p>';
+  }
+}

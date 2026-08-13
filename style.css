@@ -142,6 +142,36 @@ body.detail-open main {
     opacity: 1;
 }
 
+/* Shared CTA button used across the site (buttons and links) */
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #000;
+  color: #fff;
+  padding: 0.6rem 1.25rem;
+  border-radius: 14px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.08s ease;
+}
+
+.cta-btn:active {
+  transform: translateY(1px);
+}
+
+.cta-btn:hover {
+  background: var(--primary-hover);
+}
+
+#load-more-btn {
+  margin-bottom: 30px;
+}
+
 .nav-links a {
   font-family: 'Inter', sans-serif;
   text-decoration: none;
@@ -154,7 +184,7 @@ body.detail-open main {
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: var(--primary);
+  text-decoration: underline;
 }
 
 /* --- Hero Banner --- */
@@ -533,8 +563,8 @@ body.detail-open main {
 
 .detail-close {
   position: absolute;
-  top: 24px;
-  right: 80px;
+  top: 135px;
+  right: 330px;
   background: var(--card-bg-subtle);
   border: 1px solid var(--border-color);
 }
@@ -549,10 +579,14 @@ body.detail-open main {
   font-size: 0.95rem;
   font-weight: 600;
   gap: 0.5rem;
-  margin: 2rem 0 1.5rem;
+  margin: 1rem 0;
+  background: var(--card-bg-subtle);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
 }
 
 .btn-back:hover {
+  background: rgba(5,59,168,0.08);
   color: var(--primary);
 }
 
@@ -687,7 +721,7 @@ code {
 }
 
 .lead-text {
-  font-size: 1.2rem;
+  font-size: 16px;
   color: var(--text-dark);
   margin-bottom: 1.5rem;
 }
@@ -720,6 +754,27 @@ hr {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+#studies-overview .lead-text {
+  font-size: 16px;
+}
+
+.controls-bar button {
+  height: 27px;
+  border-radius: 27px;
+  padding: 0 1rem;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.controls-bar button:hover {
+  background: var(--primary-hover);
 }
 
 /* --- Footer --- */
@@ -811,21 +866,44 @@ hr {
   }
 }
 
-@keyframes smoothExit {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(15px);
-  }
+#studies-overview .lead-text {
+  font-size: 16px;
+}
+#studies-overview .controls-bar {
+  justify-content: flex-start;
+  margin-top: 1.75rem;
+}
+#studies-overview .controls-bar input {
+  flex: 1;
+  min-width: 320px;
+}
+#studies-overview .controls-bar button {
+  white-space: nowrap;
+  width: 42px;
+  min-width: auto;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+#studies-overview .controls-bar button svg {
+  width: 18px;
+  height: 18px;
 }
 
-#detail-view:not(.hidden) {
-  animation: smoothEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.controls-bar button {
+  height: 27px;
+  border-radius: 27px;
+  padding: 0 1rem;
+  border: none;
+  background: #000;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
 }
 
-#detail-view.closing {
-  animation: smoothExit 0.18s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.controls-bar button:hover {
+  background: var(--primary-hover);
 }
