@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icarus | Admin Control</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"> <!-- Admin specific styles -->
+  <script src="admin.js" type="module" defer></script>
+</head>
+<body style="background: var(--bg-main);">
+
+  <!-- Minimal Navbar for Admin -->
+  <nav class="navbar" style="position: static; transform: none; margin: 24px auto; max-width: 1200px;">
+      <a href="index.html" class="logo">
+          <img src="images/icarus_logo.png" alt="Icarus Logo">
+          <span>icarus | admin</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="cta-btn">Back to App</a>
+      </div>
+  </nav>
+
+ <main class="container admin-container">
+    
+    <!-- 1. LOGIN SECTION -->
+    <div id="login-section" class="admin-card" style="max-width: 400px; margin: 4rem auto; text-align: center;">
+      <h2 style="margin-bottom: 1rem;">Admin Access</h2>
+      <p class="text-muted" style="margin-bottom: 1.5rem;">Enter the database password to continue.</p>
+      <form id="login-form">
+        <input type="password" id="admin-password" placeholder="Password" required 
+               style="width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 8px;">
+        <button type="submit" class="cta-btn" style="width: 100%; justify-content: center;">Authenticate</button>
+      </form>
+      <p id="login-error" style="color: #d9534f; margin-top: 1rem; font-weight: 600;"></p>
+    </div>
+
+    <!-- 2. THE DASHBOARD (Hidden by default) -->
+    <div id="dashboard-section" class="admin-grid hidden">
+      <!-- LEFT: The CRUD Form -->
+      <div class="admin-card">
+        <h2 id="form-title">Add New Compound</h2>
+        
+        <form id="compound-form">
+          <input type="hidden" id="is-edit" value="false">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Compound ID (Unique)</label>
+              <input type="text" id="compoundId" placeholder="e.g., ostarine-1" required>
+            </div>
+            <div class="form-group">
+              <label>Display Name</label>
+              <input type="text" id="name" placeholder="e.g., Ostarine" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Categories (Comma separated)</label>
+              <input type="text" id="category" placeholder="SARM, Oral" required>
+            </div>
+            <div class="form-group">
+              <label>Administration Route</label>
+              <input type="text" id="adminRoute" placeholder="Oral or Injectable" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Anabolic Ratio</label>
+              <input type="number" step="0.1" id="anabolicRatio" required>
+            </div>
+            <div class="form-group">
+              <label>Androgenic Ratio</label>
+              <input type="number" step="0.1" id="androgenicRatio" required>
+            </div>
+            <div class="form-group">
+              <label>Toxicity (1-5)</label>
+              <input type="number" id="toxicityLevel" required>
+            </div>
+            <div class="form-group">
+              <label>Half-Life (Hours)</label>
+              <input type="number" step="0.1" id="halfLife" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Mechanism of Action</label>
+            <textarea id="mechanismOfAction" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Chemical Structure (SMILES Code)</label>
+            <input type="text" id="chemicalStructure" placeholder="e.g., CC(C)(C(=O)NC1=CC...">
+          </div>
+
+          <h3 class="section-label">Biomarker Impacts</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Testosterone</label>
+              <input type="number" step="0.1" id="testosteroneImpact" required>
+            </div>
+            <div class="form-group">
+              <label>Estrogen</label>
+              <input type="number" step="0.1" id="estrogenImpact" required>
+            </div>
+            <div class="form-group">
+              <label>HDL (Lipid)</label>
+              <input type="number" step="0.1" id="hdlImpact" required>
+            </div>
+            <div class="form-group">
+              <label>LDL (Lipid)</label>
+              <input type="number" step="0.1" id="ldlImpact" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Side Effects (Comma separated)</label>
+            <input type="text" id="sideEffects" placeholder="Suppression, Headaches" required>
+          </div>
+
+          <div class="form-group">
+            <label>Study PMIDs (Comma separated)</label>
+            <input type="text" id="studyIds" placeholder="22459616, 23307567">
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" id="submit-btn" class="cta-btn" style="flex: 1;">Save Compound</button>
+            <button type="button" id="cancel-btn" class="cta-btn hidden" style="background: var(--text-muted);">Cancel Edit</button>
+          </div>
+          <div id="form-message" style="margin-top: 1rem; font-weight: 600; text-align: center;"></div>
+        </form>
+      </div>
+
+      <!-- RIGHT: The Database List -->
+      <div class="admin-card">
+        <h2>Database Entries</h2>
+        <p class="text-muted" style="margin-bottom: 1.5rem; font-size: 0.9rem;">Manage existing compounds in your cloud database.</p>
+        <div id="admin-list" class="admin-list-container">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
