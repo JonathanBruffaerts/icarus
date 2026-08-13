@@ -551,6 +551,11 @@ body.detail-open main {
 }
 
 /* --- Detail View Layout --- */
+#detail-view,
+#study-detail-view {
+  position: relative;
+}
+
 .btn-back,
 .detail-close {
   background: none;
