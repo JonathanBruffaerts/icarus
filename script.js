@@ -27,6 +27,7 @@ let savedScrollY = 0;
 let currentView = 'home';
 let closeAnimationTimeout = null;
 
+
 // --- 1. Fetch & Initialize ---
 async function fetchCompounds({ search = '', category = '', sort = 'name' } = {}) {
   try {
