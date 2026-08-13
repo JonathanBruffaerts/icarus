@@ -559,8 +559,8 @@ body.detail-open main {
 
 .detail-close {
   position: absolute;
-  top: 135px;
-  right: 330px;
+  top: 24px;
+  right: 85px;
   background: var(--card-bg-subtle);
   border: 1px solid var(--border-color);
 }
@@ -862,6 +862,25 @@ hr {
   }
 }
 
+@keyframes smoothExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+}
+
+#detail-view:not(.hidden) {
+  animation: smoothEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+#detail-view.closing {
+  animation: smoothExit 0.18s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
 #studies-overview .lead-text {
   font-size: 16px;
 }
@@ -1069,3 +1088,4 @@ hr {
 .admin-link:hover {
   opacity: 1;
 }
+

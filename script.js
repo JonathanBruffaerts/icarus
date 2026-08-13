@@ -330,40 +330,57 @@ function catSanitize(str) {
 
 // --- 5. Navigation & View Switching ---
 function switchView(view) {
-  // Hide everything by default
+  if (closeAnimationTimeout) {
+    clearTimeout(closeAnimationTimeout);
+    closeAnimationTimeout = null;
+  }
+
+  // Capture before any DOM changes collapse the page height
+  if (view === 'detail') savedScrollY = window.scrollY;
+
   heroSection.classList.add('hidden');
   compoundSection.classList.add('hidden');
   detailView.classList.add('hidden');
-  aboutSection.classList.add('hidden');
+  detailView.classList.remove('closing');
 
   navHome.classList.remove('active');
   navAbout?.classList.remove('active');
 
-  // Ensure body class reflects whether detail view is active
   document.body.classList.remove('detail-open');
 
   if (view === 'home') {
     heroSection.classList.remove('hidden');
     compoundSection.classList.remove('hidden');
     navHome.classList.add('active');
-    
-    // Force a scroll event to instantly recalculate the reveal position
     window.dispatchEvent(new Event('scroll'));
   } else if (view === 'about') {
-    aboutSection.classList.remove('hidden');
+    aboutSection?.classList.remove('hidden');
     navAbout?.classList.add('active');
   } else if (view === 'detail') {
+    // Reset animation so it replays on every open, not just the first
+    detailView.style.animation = 'none';
     detailView.classList.remove('hidden');
+    void detailView.offsetWidth; // force reflow before animation restarts
+    detailView.style.animation = '';
     document.body.classList.add('detail-open');
   }
-  
-  // Snap the user back to the top of the page smoothly
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (view === 'detail') {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  } else if (view === 'home') {
+    // Defer until after layout reflow so the restored position isn't overwritten
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+    });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 function closeDetailView() {
   if (detailView.classList.contains('closing')) return;
   detailView.classList.add('closing');
+  // Match the 0.18s smoothExit animation duration
   closeAnimationTimeout = setTimeout(() => {
     closeAnimationTimeout = null;
     switchView('home');
@@ -404,10 +421,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Ensure all close buttons (top-right X or detail-close) close the detail view
+  // Ensure all close buttons (top-right X or detail-close) close the detail view.
+  // backBtn already has the .detail-close class, so it's included in this
+  // querySelectorAll — no need to bind it a second time separately.
   document.querySelectorAll('.detail-close').forEach(el => el.addEventListener('click', () => closeDetailView()));
-
-  backBtn.addEventListener('click', () => closeDetailView());
 });
 
 // --- 7. Fetch Specific Studies for a Compound ---s
@@ -446,7 +463,7 @@ async function loadCompoundStudies(item) {
     container.innerHTML = `
       <div style="background: var(--card-bg-subtle); border: 1px solid var(--border-color); padding: 2rem; border-radius: var(--radius-md); text-align: center;">
         <h4 style="font-size: 1.25rem; color: var(--text-dark); margin-bottom: 0.5rem;">${hitCount} Clinical Studies Found</h4>
-        <p style="color: var(--text-body); margin-bottom: 1.5rem; font-size: 0.95rem;">
+        <p style="color: var(--text-body); margin-bottom: 1.5rem; font-size: 16px;">
           Explore peer-reviewed literature, toxicity reports, and pharmacological data associated with ${item.name}.
         </p>
         <a href="${studiesUrl}" class="cta-btn" style="text-decoration: none; padding: 0.75rem 2rem; font-size: 1rem; display: inline-flex; align-items: center; gap: 0.5rem;">
