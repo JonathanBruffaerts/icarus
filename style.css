@@ -140,6 +140,7 @@ body.detail-open main {
     background: var(--primary-hover);
     color: #fff;
     opacity: 1;
+    text-decoration: none;
 }
 
 /* Shared CTA button used across the site (buttons and links) */
@@ -185,6 +186,13 @@ body.detail-open main {
 .nav-links a:hover,
 .nav-links a.active {
   text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
+
+.nav-links a.cta-btn:hover,
+.nav-links a.cta-btn.active {
+  text-decoration: none;
 }
 
 /* --- Hero Banner --- */
