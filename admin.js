@@ -1,3 +1,6 @@
+/* Sources used in this file:
+  - Custom backend API: https://web2-course-project-back-end-ylzw.onrender.com for auth and CRUD requests. */
+
 const API_URL = 'https://web2-course-project-back-end-ylzw.onrender.com';
 
 // --- Auth Elements ---
@@ -15,6 +18,7 @@ const formTitle = document.getElementById('form-title');
 const formMessage = document.getElementById('form-message');
 
 // --- 1. Authentication Logic ---
+// All login and token handling below talks to the custom backend API listed above.
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const password = document.getElementById('admin-password').value;
@@ -60,6 +64,7 @@ const getAuthHeaders = () => {
 };
 
 // --- 2. Fetch & Render Logic ---
+// Admin list loading is also driven by the custom backend API listed above.
 async function fetchAdminCompounds() {
   try {
     const response = await fetch(`${API_URL}/compounds`);

@@ -1,3 +1,6 @@
+/* Sources used in this file:
+  - Custom backend API: https://web2-course-project-back-end-ylzw.onrender.com. */
+
 const API_URL = 'https://web2-course-project-back-end-ylzw.onrender.com';
 
 // Elements
@@ -17,6 +20,7 @@ let currentQuery = '';
 let isFetching = false;
 
 // --- 1. Handle Search & Pagination ---
+// Search and pagination below rely on the backend proxy.
 searchForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const query = searchInput.value.trim();
@@ -97,6 +101,7 @@ function renderOverview(studies) {
 }
 
 // --- 3. Render Detail View (Abstracts) ---
+// Abstract rendering and outbound PubMed links are populated from the proxy response.
 function showDetailView(study) {
   overviewSection.classList.add('hidden');
   detailSection.classList.remove('hidden');

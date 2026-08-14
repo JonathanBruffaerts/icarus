@@ -1,3 +1,10 @@
+/* Sources used in this file:
+  - Chart.js docs: https://www.chartjs.org/docs/latest/ for renderBiomarkerChart().
+  - SmilesDrawer docs: https://github.com/reymond-group/smilesDrawer for the molecule canvas logic.
+  - Claude share: https://claude.ai/share/67f2994a-74db-4d0a-8ca2-3a8ed30f2a1d for the scroll-restoration fix below. */
+
+
+
 const API_URL = 'https://web2-course-project-back-end-ylzw.onrender.com';
 
 let allCompounds = [];
@@ -200,10 +207,10 @@ function showDetails(item) {
     </div>
   `;
 
-// Draw the chart
+  // Chart.js-based render path; see source note at the top of this file.
   renderBiomarkerChart(item.biomarkers);
 
-  // Draw the molecular structure
+  // SmilesDrawer-based render path; see source note at the top of this file.
   if (item.chemicalStructure) {
     if (window.SmilesDrawer) {
       try {
@@ -242,7 +249,7 @@ function showDetails(item) {
       document.getElementById('molecule-canvas').style.display = 'none';
     }
   }
-  // Fetch linked studies
+  // Backend proxy lookup; see source note at the top of this file.
   loadCompoundStudies(item);
 }
 
@@ -329,6 +336,8 @@ function catSanitize(str) {
 }
 
 // --- 5. Navigation & View Switching ---
+// The savedScrollY/currentView restoration logic below was fixed with Claude help;
+// see the source note at the top of this file.
 function switchView(view) {
   if (closeAnimationTimeout) {
     clearTimeout(closeAnimationTimeout);
@@ -397,9 +406,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   sortSelect.addEventListener('change', applyFilters);
 
   navHome.addEventListener('click', (e) => { e.preventDefault(); switchView('home'); });
-  // navStudiesCta is an anchor to the Research Library; default navigation will work.
 
-  // Feature CTAs: make specific feature buttons scroll to the compound explorer
   const featureExplorerButtons = document.querySelectorAll('.feature-cta[aria-label="Open Compound Explorer"], .feature-cta[aria-label="Open Biomarker Dashboard"]');
   featureExplorerButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -427,7 +434,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.querySelectorAll('.detail-close').forEach(el => el.addEventListener('click', () => closeDetailView()));
 });
 
-// --- 7. Fetch Specific Studies for a Compound ---s
+// --- 7. Fetch Specific Studies for a Compound ---
+// This search flow is built around the backend's Europe PMC proxy endpoint.
 async function loadCompoundStudies(item) {
   const container = document.getElementById('compound-studies-container');
   const countSpan = document.getElementById('study-count');

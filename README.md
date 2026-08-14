@@ -1,35 +1,54 @@
-🧪 Icarus | Compound Research Database
-Icarus is a specialized digital repository designed to catalog and analyze performance-enhancing compounds. It provides researchers with detailed pharmacological data, including anabolic-to-androgenic ratios, half-life statistics, and physiological biomarker impacts.
+# 🧪 Icarus | Compound Research Database
 
-Live link: [Link to your hosted Vite site on Netlify/Vercel]
+Icarus is a specialized digital repository designed to catalog and analyze performance-enhancing compounds.
+It provides researchers with detailed pharmacological data, including anabolic-to-androgenic ratios,
+half-life statistics, and physiological biomarker impacts.
 
-Up & running 🏃‍➡️
-Clone the repository:
+## Live Demo
 
-Bash
+- [Link to your hosted Vite site on Netlify/Vercel](#)
 
+## Up & Running 🏃‍➡️
+
+1. Clone the repository:
+
+```bash
 git clone [your-frontend-repo-url]
-Install dependencies:
+```
 
-Bash
+2. Install dependencies:
 
+```bash
 npm install
-Environment Setup: Create a .env file in the root directory and add your backend URL:
+```
 
-Code snippet
+3. Create a `.env` file in the project root and add your backend URL:
 
-VITE_API_URL=https://your-backend-render-url.com
-Launch the development server:
+```env
+VITE_API_URL=https://web2-course-project-back-end-ylzw.onrender.com
+```
 
-Bash
+4. Launch the development server:
 
+```bash
 npm run dev
-Build for production:
+```
 
-Bash
+5. Build for production:
 
+```bash
 npm run build
-Sources 🗃️
+```
 
-MDN Web Docs - CSS Flexbox: Flexbox Guide used in style.css for the Hero section layout and card grid.
+## Sources 🗃️
+
+- **Chart.js (CDN)**: Used in `script.js` to render the dynamic "Biomarker Impact" bar chart, displaying variances in Testosterone, Estrogen, HDL, and LDL.
+	- Docs: https://www.chartjs.org/docs/latest/
+
+- **SmilesDrawer (v1.0.10 CDN)**: Used in `script.js` to parse chemical SMILES codes and render molecular structures onto the HTML canvas.
+	- Docs: [View SmilesDrawer Documentation](https://github.com/reymond-group/smilesDrawer)
+
+- **Claude (Anthropic AI Assistant)**: Used to debug and fix a scroll-restoration bug and a stuck-state bug in the detail-view close button.
+	- Files: `script.js`, `style.css`
+	- Share link: https://claude.ai/share/67f2994a-74db-4d0a-8ca2-3a8ed30f2a1d
 
