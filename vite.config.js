@@ -2,7 +2,8 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
-  root: './',  // Repository root
+  root: './',
+  base: '/web2-course-project-front-end-JonathanBruffaerts/', 
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
