@@ -1,4 +1,4 @@
-# Simple workflow for deploying static content to GitHub Pages
+# .github/workflows/deploy.yml
 name: Deploy static content to Pages
 
 on:
@@ -23,28 +23,29 @@ concurrency:
 jobs:
   # Single deploy job since we're just deploying
   deploy:
-    env:
-      VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    # Pass your Render API URL from GitHub Secrets into the Vite build process
+    env:
+      VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
       - name: Set up Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: lts/*
+          node-version: 20
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
       - name: Build
         run: npm run build
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v4
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
           path: './dist'
