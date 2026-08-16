@@ -6,14 +6,14 @@ half-life statistics, and physiological biomarker impacts.
 
 ## Live Demo
 
-- [Link to your hosted Vite site on Netlify/Vercel](#)
+- https://ehb-mct.github.io/web2-course-project-front-end-JonathanBruffaerts/index.html
 
 ## Up & Running 🏃‍➡️
 
 1. Clone the repository:
 
 ```bash
-git clone [your-frontend-repo-url]
+git clone https://github.com/EHB-MCT/web2-course-project-front-end-JonathanBruffaerts
 ```
 
 2. Install dependencies:
